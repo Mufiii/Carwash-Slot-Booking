@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+
+{% comment %} <form class="otp-Form">
+ 
+  <span class="mainHeading">Enter OTP</span>
+  <p class="otpSubheading">We have sent a verification code to your mobile number</p>
+  <div class="inputContainer">
+   <input required="required" maxlength="1" type="text" class="otp-input" id="otp-input1">
+   <input required="required" maxlength="1" type="text" class="otp-input" id="otp-input2">
+   <input required="required" maxlength="1" type="text" class="otp-input" id="otp-input3">
+   <input required="required" maxlength="1" type="text" class="otp-input" id="otp-input4"> 
+   
+  </div>
+   <button class="verifyButton" type="submit">Verify</button>
+     <button class="exitBtn">×</button>
+     <p class="resendNote">Didn't receive the code? <button class="resendBtn">Resend Code</button></p>
+     
+</form> {% endcomment %}
+
+
+{% block content %}
+
+<!-- templates/verify_otp.html -->
+
+<h2>OTP Verification</h2>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<p>Please enter the OTP code that has been sent to your email.</p>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="otp" placeholder="Enter OTP">
+    <button type="submit">Verify</button>
+</form>
+
+
+{% endblock content %}
+
+
+
