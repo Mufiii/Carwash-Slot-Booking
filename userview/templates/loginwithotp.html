@@ -9,25 +9,18 @@
         <div class="card mx-auto" style="max-width: 380px; margin-top:100px;">
           <div class="card-body">
           <h4 class="card-title mb-4">Sign in</h4>
-          <form method="POST" action="{% url 'login' %}">
+          <form method="POST" action="{% url 'login_with_otp' %}">
             {% csrf_token %}
               <div class="form-group">
                  <input type="email" class="form-control" placeholder="Email Address" name='email' >
               </div> <!-- form-group// -->
-              <div class="form-group">
-                <input type="password" class="form-control" placeholder="Password" name='password' >
-              </div> <!-- form-group// -->
 
               <div class="form-group">
-                  <a href="{% url 'forgot' %}" class="float-right mb-3">Forgot password?</a> 
-
-              </div> <!-- form-group form-check .// -->
-              <div class="form-group">
-                  <button type="submit" class="btn btn-primary btn-block btn-dark"> Login  </button>
+                  <button type="submit" class="btn btn-primary btn-block btn-dark"> Request OTP  </button>
               </div> <!-- form-group// --> 
               <hr>
-              <div class="form-group">
-                  <Button type="button" class="btn btn-primary btn-block btn-dark"> <a href="{% url 'login_with_otp' %}">Login With OTP</Button>
+              <div>
+                  <Button type="button" class="btn btn-primary btn-block btn-dark"> <a href="{% url 'login' %}">Login With Password</Button>
               </div>   
           </form>
           </div> <!-- card-body.// -->

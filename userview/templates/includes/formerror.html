@@ -1,0 +1,16 @@
+{% if form.errors %}
+      <div id="message" class="alert alert-warning alert-dismissible fade-show" role="alert">
+        {% for field in form %}
+          {% if field.errors %}
+            {{ field.errors }}
+          {% endif %}
+        {% endfor %}
+      </div> 
+{% endif %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+setTimeout(function(){
+$('#message').fadeOut('slow');
+}, 10000);
+</script>

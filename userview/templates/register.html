@@ -10,18 +10,30 @@
       <form method="POST" action="{% url 'register' %}">
         {% csrf_token %}
         {{ form.as_p }}
-       <div class="alert alert-info">
-            {% for message in messages %}
-                {{message}}
-            {% endfor %}
-       </div>
+
+        {% include 'includes/formerror.html' %}
         <div class="form-group">
           <button type="submit" class="btn btn-primary btn-block btn-dark">Register</button>
         </div><!-- form-group end.// -->
       </form>
     </article><!-- card-body.// -->
   </div><!-- card .// -->
-  <p class="text-center mt-4">Have an account? <a href="">Log In</a></p>
+  <p class="text-center mt-4">Have an account? <a href="{% url 'login' %}">Log In</a></p>
 </section>
+
+
+
+<script>
+  setTimeout(function() {
+      var messageAlerts = document.querySelectorAll('#message-alert');
+      if (messageAlerts) {
+          messageAlerts.forEach(function(alert) {
+              alert.style.display = 'none';
+          });
+      }
+  }, 8000);
+</script>
+
+
 {% endblock content %}
 
