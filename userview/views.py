@@ -55,7 +55,7 @@ def register(request):
                       user.save()
                             
                       # Redirect to the OTP verification page
-                      return redirect('verify_otp', user_id=user.id)
+                      return redirect('userview/verify_otp', user_id=user.id)
                       
                     else:
                       messages.error(request, "Phone number must be 10 digits")
@@ -72,8 +72,8 @@ def register(request):
           
     else: 
         form = RegistrationForm()
+    return render(request, 'userviews/register.html', {'form': form})
     
-    return render(request, 'register.html', {'form': form})
   
   
 def send_email(subject, message, sender, recipient_list):
@@ -96,12 +96,16 @@ def verify_otp(request,user_id=0) :
       user.save() 
       return redirect('login')
     elif  get_otp == otp and  'verify-forgot-otp' in request.path :
-      messages.success(request, 'Enter the Otp that send inth Your Email')
+      messages.success(request, 'Enter the Otp that send in the Your Email')
       return redirect('reset',user_id = user.id)
+    elif get_otp == otp and 'verify-login-otp' in request.path:
+            # Additional logic for 'verify-login-otp' path
+            messages.success(request, 'OTP verification successful. Login successful.')
+            return redirect('home')
     else:
       messages.error(request, 'Invalid OTP')
       return redirect('verify_otp', user_id=user.id)
-  return render(request, 'verify_otp.html')
+  return render(request, 'userviews/verify_otp.html')
 
 
 def user_login(request) :
@@ -118,7 +122,7 @@ def user_login(request) :
       messages.error(request ,'Invalid Email or Password')
   
       
-  return render(request, 'login.html' )
+  return render(request, 'userviews/login.html' )
 
 #forgot Password
 def forgot_password(request) :
@@ -134,13 +138,13 @@ def forgot_password(request) :
             subject = 'OTP for Reset Password'
             message = f'Your OTP for password reset is {otp}'
             email_from = settings.EMAIL_HOST_USER
-            recipient_list = [email,]
+            recipient_list = [email]
             send_email(subject,message,email_from,recipient_list)
             return redirect('verify_forgot_otp',user_id=user.id)
         except CustomUser.DoesNotExist:
             messages.error(request, 'Email does not exist')
             return redirect('forgot')
-  return render(request, 'forgot_password.html')
+  return render(request, 'userviews/forgot_password.html')
 
 
 # reset_password
@@ -154,11 +158,11 @@ def reset_password(request,user_id) :
       user.save()
       print(user)
       print(password)
-  return render(request,'reset_password.html', {'user':user})
+  return render(request,'userviews/reset_password.html', {'user':user})
 
 
 def home(request) :
-  return render(request,'home.html')
+  return render(request,'userviews/home.html')
 
 
 def login_with_otp(request) :
@@ -174,10 +178,10 @@ def login_with_otp(request) :
       email_from = settings.EMAIL_HOST_USER
       recipient_list = [email,]
       send_email(subject,message,email_from,recipient_list)
-      return redirect('verify_login_otp', user_id = user.id)
+      return redirect('userviews/verify_login_otp', user_id = user.id)
       
       
-  return render(request,'loginwithotp.html')
+  return render(request,'userviews/loginwithotp.html')
 
 
 

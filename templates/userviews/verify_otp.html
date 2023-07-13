@@ -26,11 +26,18 @@
 <h2>OTP Verification</h2>
 
 {% if messages %}
-<ul class="messages">
+<div class="messages">
     {% for message in messages %}
-     {{ message }}
+        {% if message.tags == succcess %}{% endif %}
+            <div class="alert alert-info">
+                {{ message }}
+            </div>
+        {% else message.tags == error %}{% endif %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
     {% endfor %}
-</ul>
+</div>
 {% endif %}
 
 <p>Please enter the OTP code that has been sent to your email.</p>

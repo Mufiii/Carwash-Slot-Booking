@@ -31,10 +31,17 @@ class CustomUser(AbstractUser):
     is_active = models.BooleanField(default=False)
     is_staff=models.BooleanField(default=False)
     
+    def __str__(self) :
+        return self.first_name
+    
     objects = CustomUserManager()
     
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+
+
+
+    
     
     
     
