@@ -13,7 +13,7 @@ class RegistrationForm(forms.ModelForm):
         
         
     def __init__(self,*args,**kwargs):
-        super(RegistrationForm,self).__init__(*args,**kwargs)
+        super().__init__(*args,**kwargs)
         self.fields['username'].error_messages.clear()
           
           

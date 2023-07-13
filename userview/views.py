@@ -15,6 +15,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
 
 
+
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
@@ -50,7 +51,7 @@ def register(request):
                       recipient_list = [email,]
                       send_email(subject,message,email_from,recipient_list)
                       
-                      print(otp)
+                      
                       user.save()
                             
                       # Redirect to the OTP verification page
@@ -88,24 +89,19 @@ def verify_otp(request,user_id=0) :
   
   if request.method == 'POST' :
     otp = request.POST.get('otp')
-    if get_otp == otp and  'verify-forgot-otp' not in request.path :
+    if get_otp == otp and  'verify-forgot-otp' not  in request.path :
       del request.session['otp']
       user.is_active = True
+      print('thoppi')
       user.save() 
-      messages.success(request, 'Account has been verified')
       return redirect('login')
     elif  get_otp == otp and  'verify-forgot-otp' in request.path :
       messages.success(request, 'Enter the Otp that send inth Your Email')
       return redirect('reset',user_id = user.id)
-    elif get_otp == otp and 'login_with_otp' in request.path :
-      return redirect('home',user_id=user.id)
-    else :
-      messages.error(request, 'invalid OTP')
+    else:
+      messages.error(request, 'Invalid OTP')
       return redirect('verify_otp', user_id=user.id)
   return render(request, 'verify_otp.html')
-
-def verify_forgot_otp(request) :
-  get_otp = request.session.get
 
 
 def user_login(request) :
@@ -178,7 +174,7 @@ def login_with_otp(request) :
       email_from = settings.EMAIL_HOST_USER
       recipient_list = [email,]
       send_email(subject,message,email_from,recipient_list)
-      return redirect('verify_login_otp', user_id= user.id)
+      return redirect('verify_login_otp', user_id = user.id)
       
       
   return render(request,'loginwithotp.html')
