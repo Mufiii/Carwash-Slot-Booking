@@ -13,7 +13,7 @@
       <div class="card-body">
           <div class="row">
               <div class="col-md-12">
-                <form action="" method='POST'>
+                <form action="{% url 'place_order' %}" method='POST'>
                   {% csrf_token %}
                   <div class="form-row">
                     <div class="form-group col-md-6">
@@ -78,7 +78,7 @@
                           <label>Registration Number</label>
                           <input type="text" class="form-control" name="" id=" ">
                         </div>
-                        <button type="button" class="btn btn-success">Confirm Order</button>
+                        <button type="submit" class="btn btn-success">Confirm Order</button>
                       
                 </form>
               </div>

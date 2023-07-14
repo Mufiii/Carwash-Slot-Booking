@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from django.utils.crypto import get_random_string
+from django.contrib.auth import logout
 import re
 
 from django.core.mail import EmailMessage
@@ -28,10 +29,10 @@ def register(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             confirm_password = form.cleaned_data['confirm_password']
-            if len(username) >= 5:
-               if re.match(r'^[A-Za-z]', username):
+            if len(username) >= 5 and re.match(r'^[A-Za-z]', username):
+              if len(password) >= 8 and re.search(r'[A-Z].*[a-z].*\d', password):
                   if password == confirm_password :
-                    if re.match(r'^\d{10}$', phone):
+                    if re.match(r'^\d{10}$', phone) and not re.search(r'\D', phone):
                       # Generate OTP
                       otp = get_random_string(length=4, allowed_chars='123456789')
                       request.session['otp'] = otp
@@ -46,27 +47,25 @@ def register(request):
                       subject = 'OTP for Account verification'
                       message = f'Your OTP for Account Verification {otp}'
                       email_from = settings.EMAIL_HOST_USER
-                      recipient_list = [email,]
+                      recipient_list = [email]
                       send_email(subject,message,email_from,recipient_list)
                       
                       
                       user.save()
                             
                       # Redirect to the OTP verification page
-                      return redirect('userview/verify_otp', user_id=user.id)
+                      return redirect('verify_otp', user_id=user.id)
                       
                     else:
                       messages.error(request, "Phone number must be 10 digits")
                   else:
                     messages.error(request, "Password does not match")
-               else:
-                messages.error(request, "Username must start with an alphabet")
+              else:
+                  messages.error(request,"Password should contain at least one uppercase letter, one lowercase letter, and one digit")
             else:
               messages.error(request, "Username must contain at least 5 characters")
         else:
-          # form.errors.clear()
-          # form.non_field_errors().clear()
-          messages.error(request,"Invalid form data")  
+          messages.error(request,"Invalid Data")  
           
     else: 
         form = RegistrationForm()
@@ -107,7 +106,9 @@ def verify_otp(request,user_id=0) :
 
 @never_cache
 def user_login(request) :
-  if request.method == 'POST' :
+  if request.user.is_authenticated:
+        return redirect('home')
+  elif request.method == 'POST' :
     email = request.POST.get('email')
     password = request.POST.get('password')
     user = authenticate(email=email,password=password)
@@ -118,7 +119,9 @@ def user_login(request) :
       return redirect('home')
     else:
       messages.error(request ,'Invalid Email or Password')
-  
+  elif request.method == 'GET':
+        logout(request)
+        return redirect('home')
       
   return render(request, 'userviews/login.html' )
 
@@ -181,6 +184,12 @@ def login_with_otp(request) :
       
       
   return render(request,'userviews/loginwithotp.html')
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')
+  
 
 
 

@@ -11,5 +11,6 @@ urlpatterns = [
     path('verify-otp/<int:user_id>/',views.verify_otp , name='verify_otp'),
     path('verify-forgot-otp/<int:user_id>/',views.verify_otp , name="verify_forgot_otp"),
     path('verify-login-otp/<int:user_id>/',views.verify_otp , name="verify_login_otp"),
-    path('home/', views.home , name='home'),
+    path('', views.home , name='home'),
+    path('logout', views.logout_view, name='logout'),
 ]

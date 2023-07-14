@@ -1,44 +1,11 @@
 {% extends 'base.html' %}
 
 
-{% comment %} <form class="otp-Form">
- 
-  <span class="mainHeading">Enter OTP</span>
-  <p class="otpSubheading">We have sent a verification code to your mobile number</p>
-  <div class="inputContainer">
-   <input required="required" maxlength="1" type="text" class="otp-input" id="otp-input1">
-   <input required="required" maxlength="1" type="text" class="otp-input" id="otp-input2">
-   <input required="required" maxlength="1" type="text" class="otp-input" id="otp-input3">
-   <input required="required" maxlength="1" type="text" class="otp-input" id="otp-input4"> 
-   
-  </div>
-   <button class="verifyButton" type="submit">Verify</button>
-     <button class="exitBtn">×</button>
-     <p class="resendNote">Didn't receive the code? <button class="resendBtn">Resend Code</button></p>
-     
-</form> {% endcomment %}
-
-
 {% block content %}
 
 <!-- templates/verify_otp.html -->
 
 <h2>OTP Verification</h2>
-
-{% if messages %}
-<div class="messages">
-    {% for message in messages %}
-        {% if message.tags == succcess %}{% endif %}
-            <div class="alert alert-info">
-                {{ message }}
-            </div>
-        {% else message.tags == error %}{% endif %}
-            <div class="alert alert-danger">
-                {{ message }}
-            </div>
-    {% endfor %}
-</div>
-{% endif %}
 
 <p>Please enter the OTP code that has been sent to your email.</p>
 
