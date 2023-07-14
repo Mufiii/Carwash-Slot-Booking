@@ -1,77 +1,12 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
 
-<div class="container">
-      <div class="row">
-      <main class="col-md-9">
-          <article class="card">
-          <header class="card-header">
-              <strong class="d-inline-block mr-3">Edit Profile</strong>
 
-          </header>
-          <div class="card-body">
-              <div class="row">
-                  <div class="col-md-12">
-                    <form action="" method='POST'>
-                      {% csrf_token %}
-                      <div class="form-row">
-                        <div class="form-group col-md-6">
-                          <label>First Name</label>
-                          <input type="text" class="form-control" name="" id=" ">
-                        </div>
-                        <div class="form-group col-md-6">
-                          <label>Last Name</label>
-                          <input type="text" class="form-control" name="" id=" ">
-                        </div>
+<div style="width: 100%; height: 100vh; background-image: url('https://images.pexels.com/photos/118118/pexels-photo-118118.jpeg?auto=compress&cs=tinysrgb&w=600'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
 
-                      </div>
-                      <div class="form-row">
-                        <div class="form-group col-md-6">
-                          <label>Phone Number</label>
-                          <input type="text" class="form-control" name="" id=" ">
-                        </div>
-                        {% comment %} <div class="form-group col-md-6">
-                          <label>Profile picture</label>
-                          <input type="file" class="form-control" name="" id=" ">
-                        </div>
+<button type="button"  class="btn btn-outline-success btn-lg">Book Now</button>
 
-                      </div>
-                      <div class="form-group">
-                        <label>Address Line 1</label>
-                        <input type="text" class="form-control" name="" id=" ">
-                      </div>
-                      <div class="form-group">
-                        <label>Address Line 2</label>
-                        <input type="text" class="form-control" name="" id=" ">
-                      </div>
-                      <div class="form-row">
-                        <div class="form-group col-md-4">
-                          <label>City</label>
-                          <input type="text" class="form-control" name="" id=" ">
-                        </div>
-                        <div class="form-group col-md-4">
-                          <label>State</label>
-                          <input type="text" class="form-control" name="" id=" ">
-                        </div>
-                        <div class="form-group col-md-4">
-                          <label>Country</label>
-                          <input type="text" class="form-control" name="" id=" ">
-                        </div> {% endcomment %}
-
-                      </div>
-                    </form>
-                  </div>
-
-
-              </div>
-          </div>
-
-          </article>
-      </main>
-  </div>
-  </div>
 
 {% endblock content %}
 

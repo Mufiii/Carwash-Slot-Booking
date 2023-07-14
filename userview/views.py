@@ -5,17 +5,15 @@ from CarWash import settings
 from .models import CustomUser
 from .forms import RegistrationForm
 from django.contrib import messages
-from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 from django.utils.crypto import get_random_string
 import re
-from django.utils.http import urlsafe_base64_decode,urlsafe_base64_encode
-from django.utils.encoding import force_bytes
-from django.contrib.auth.tokens import default_token_generator
+
 from django.core.mail import EmailMessage
 
 
-
+@never_cache
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
@@ -107,7 +105,7 @@ def verify_otp(request,user_id=0) :
       return redirect('verify_otp', user_id=user.id)
   return render(request, 'userviews/verify_otp.html')
 
-
+@never_cache
 def user_login(request) :
   if request.method == 'POST' :
     email = request.POST.get('email')
@@ -160,7 +158,8 @@ def reset_password(request,user_id) :
       print(password)
   return render(request,'userviews/reset_password.html', {'user':user})
 
-
+@login_required(login_url='login')
+@never_cache
 def home(request) :
   return render(request,'userviews/home.html')
 
