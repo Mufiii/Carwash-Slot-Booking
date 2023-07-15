@@ -1,0 +1,137 @@
+{% extends 'base.html' %} {% block content %}
+
+
+{% include 'includes/navbar.html' %}
+
+<div class="container">
+  <div class="row">
+    <main class="col-md-8">
+      <article class="card">
+        <header class="card-header">
+          <strong class="d-inline-block mr-5">Customer Details</strong>
+        </header>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <form action="{% url 'place_order' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>First Name</label>
+                    <input type="text" class="form-control" name="first_name" />
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Last Name</label>
+                    <input type="text" class="form-control" name="last_name" />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>Phone Number</label>
+                    <input type="text" class="form-control" name="phone" />
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Email</label>
+                    <input type="email" class="form-control" name="email" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Address</label>
+                  <input type="text" class="form-control" name="address" />
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>City</label>
+                    <input type="text" class="form-control" name="city" />
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>State</label>
+                    <input type="text" class="form-control" name="state" />
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Country</label>
+                    <input type="text" class="form-control" name="country" />
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Zip Code</label>
+                    <input type="text" class="form-control" name="zip_code" />
+                  </div>
+                </div>
+                <h3>Vehicle Details</h3>
+                <div class="form-group">
+                  <label>Category</label>
+                  <select class="form-control" name="category">
+                    <option value="Bike">Bike</option>
+                    <option value="Car">Car</option>
+                  </select>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>Make</label>
+                    <input type="text" class="form-control" name="make" />
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Model</label>
+                    <input type="text" class="form-control" name="model" />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>Color</label>
+                    <input type="text" class="form-control" name="color" />
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Registration Number</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="registration_no"
+                    />
+                  </div>
+                </div>
+                <h3>Order Details</h3>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>Order Number</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="order_number"
+                    />
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Order Note</label>
+                    <textarea class="form-control" name="order_note"></textarea>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>Start Time</label>
+                    <input
+                      type="datetime-local"
+                      class="form-control"
+                      name="start_time"
+                    />
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>End Time</label>
+                    <input
+                      type="datetime-local"
+                      class="form-control"
+                      name="end_time"
+                    />
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-success">
+                  Confirm Order
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </article>
+    </main>
+  </div>
+</div>
+
+{% endblock content %}

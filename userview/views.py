@@ -82,6 +82,7 @@ def send_email(subject, message, sender, recipient_list):
 def verify_otp(request,user_id=0) :
   get_otp = request.session.get('otp')
   print(get_otp)
+  print(user_id)
   user = CustomUser.objects.get(id=user_id)
   
   if request.method == 'POST' :
@@ -96,7 +97,7 @@ def verify_otp(request,user_id=0) :
       messages.success(request, 'Enter the Otp that send in the Your Email')
       return redirect('reset',user_id = user.id)
     elif get_otp == otp and 'verify-login-otp' in request.path:
-            # Additional logic for 'verify-login-otp' path
+            login(request, user)
             messages.success(request, 'OTP verification successful. Login successful.')
             return redirect('home')
     else:
@@ -107,7 +108,7 @@ def verify_otp(request,user_id=0) :
 @never_cache
 def user_login(request) :
   if request.user.is_authenticated:
-        return redirect('home')
+    return redirect('home')
   elif request.method == 'POST' :
     email = request.POST.get('email')
     password = request.POST.get('password')
@@ -119,11 +120,8 @@ def user_login(request) :
       return redirect('home')
     else:
       messages.error(request ,'Invalid Email or Password')
-  elif request.method == 'GET':
-        logout(request)
-        return redirect('home')
-      
   return render(request, 'userviews/login.html' )
+
 
 #forgot Password
 def forgot_password(request) :
@@ -159,6 +157,7 @@ def reset_password(request,user_id) :
       user.save()
       print(user)
       print(password)
+      return redirect("login")
   return render(request,'userviews/reset_password.html', {'user':user})
 
 @login_required(login_url='login')
@@ -180,8 +179,7 @@ def login_with_otp(request) :
       email_from = settings.EMAIL_HOST_USER
       recipient_list = [email,]
       send_email(subject,message,email_from,recipient_list)
-      return redirect('userviews/verify_login_otp', user_id = user.id)
-      
+      return redirect('verify_login_otp', user_id = user.id )
       
   return render(request,'userviews/loginwithotp.html')
 

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% include 'includes/navbar.html' %}
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <h2>Order Details</h2>
+      <hr>
+      <dl class="row">
+        <dt class="col-sm-3">Order Number:</dt>
+        <dd class="col-sm-9">{{ order.order_number }}</dd>
+  
+        <dt class="col-sm-3">Customer Name:</dt>
+        <dd class="col-sm-9">{{ order.customer.first_name }} {{ order.customer.last_name }}</dd>
+  
+        <dt class="col-sm-3">Customer Phone:</dt>
+        <dd class="col-sm-9">{{ order.customer.phone }}</dd>
+  
+        <dt class="col-sm-3">Customer Email:</dt>
+        <dd class="col-sm-9">{{ order.customer.email }}</dd>
+  
+        <dt class="col-sm-3">Vehicle Make:</dt>
+        <dd class="col-sm-9">{{ order.vehicle.make }}</dd>
+  
+        <dt class="col-sm-3">Vehicle Model:</dt>
+        <dd class="col-sm-9">{{ order.vehicle.model }}</dd>
+  
+        <dt class="col-sm-3">Start Time:</dt>
+        <dd class="col-sm-9">{{ order.start_time }}</dd>
+  
+        <dt class="col-sm-3">End Time:</dt>
+        <dd class="col-sm-9">{{ order.end_time }}</dd>
+  
+        <dt class="col-sm-3">Category:</dt>
+        <dd class="col-sm-9">{{ order.get_category_display }}</dd>
+  
+        <dt class="col-sm-3">Order Note:</dt>
+        <dd class="col-sm-9">{{ order.order_note }}</dd>
+      </dl>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

@@ -3,7 +3,42 @@
 
 {% block content %}
 
-<h1>User Profile</h1>
+{% include 'includes/navbar.html' %}
+
+<html>
+<head>
+    <title>User Profile</title>
+    <style>
+        .card {
+            width: 300px;
+            padding: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .card-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .card-text {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1 class="card-title">My Account</h1>
+        <p class="card-text"><strong>First name:</strong> {{ user.first_name }}</p>
+        <p class="card-text"><strong>Last name:</strong> {{ user.last_name }}</p>
+        <p class="card-text"><strong>Email:</strong> {{ user.email }}</p>
+        <p class="card-text"><strong>Phone:</strong> {{ user.phone }}</p>
+        <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+    </div>
+</body>
+</html>
+</html>
+
+
 
 {% endblock content %}
 

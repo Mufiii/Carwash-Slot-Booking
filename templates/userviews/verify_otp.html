@@ -1,22 +1,69 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OTP Verification</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f1f1f1;
+            font-family: Arial, sans-serif;
+        }
 
+        .container {
+            width: 400px;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
 
-{% block content %}
+        h2 {
+            margin-top: 0;
+        }
 
-<!-- templates/verify_otp.html -->
+        p {
+            margin-bottom: 20px;
+        }
 
-<h2>OTP Verification</h2>
+        form {
+            display: flex;
+            flex-direction: column;
+        }
 
-<p>Please enter the OTP code that has been sent to your email.</p>
+        input[type="text"] {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
 
-<form method="POST">
-    {% csrf_token %}
-    <input type="text" name="otp" placeholder="Enter OTP">
-    <button type="submit">Verify</button>
-</form>
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
 
-
-{% endblock content %}
-
-
-
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>OTP Verification</h2>
+        <p>Please enter the OTP code that has been sent to your email.</p>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="otp" placeholder="Enter OTP">
+            <button type="submit">Verify</button>
+        </form>
+    </div>
+</body>
+</html>
