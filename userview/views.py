@@ -10,7 +10,7 @@ from django.views.decorators.cache import never_cache
 from django.utils.crypto import get_random_string
 from django.contrib.auth import logout
 import re
-
+import pyotp
 from django.core.mail import EmailMessage
 
 
@@ -34,7 +34,8 @@ def register(request):
                   if password == confirm_password :
                     if re.match(r'^\d{10}$', phone) and not re.search(r'\D', phone):
                       # Generate OTP
-                      otp = get_random_string(length=4, allowed_chars='123456789')
+                      totp = pyotp.TOTP(pyotp.random_base32())
+                      otp = totp.now()
                       request.session['otp'] = otp
                       user = CustomUser.objects.create_user(
                           first_name=first_name,
@@ -62,7 +63,7 @@ def register(request):
                     messages.error(request, "Password does not match")
               else:
                   messages.error(request,"Password should contain at least one uppercase letter, one lowercase letter, and one digit")
-            else:
+            else:            
               messages.error(request, "Username must contain at least 5 characters")
         else:
           messages.error(request,"Invalid Data")  
@@ -79,23 +80,37 @@ def send_email(subject, message, sender, recipient_list):
 
 
 # verify OTP
+# def verify_otp(request,user_id=0) :
+#   get_otp = request.session.get('otp')
+#   print(get_otp)
+#   print(user_id)
+#   user = CustomUser.objects.get(id=user_id)
+  
+#   if request.method == 'POST' :
+#     otp = request.POST.get('otp')
+#     if get_otp == otp and  'verify-forgot-otp' not  in request.path :
+#       del request.session['otp']
+#       user.is_active = True
+#       user.save() 
+#       return redirect('login')
+#     elif  get_otp == otp and  'verify-forgot-otp' in request.path :
+#       messages.success(request, 'Enter the Otp that send in the Your Email')
+#       return redirect('reset',user_id = user.id)
+#     
+#   return render(request, 'userviews/verify_otp.html')
+
 def verify_otp(request,user_id=0) :
   get_otp = request.session.get('otp')
-  print(get_otp)
-  print(user_id)
   user = CustomUser.objects.get(id=user_id)
-  
   if request.method == 'POST' :
     otp = request.POST.get('otp')
-    if get_otp == otp and  'verify-forgot-otp' not  in request.path :
-      del request.session['otp']
+    if get_otp == otp and 'verify-forgot-otp' not in request.path :
       user.is_active = True
-      print('thoppi')
-      user.save() 
+      user.save()
       return redirect('login')
-    elif  get_otp == otp and  'verify-forgot-otp' in request.path :
+    elif get_otp == otp and 'verify-forgot-otp' in request.path :
       messages.success(request, 'Enter the Otp that send in the Your Email')
-      return redirect('reset',user_id = user.id)
+      return redirect('reset',user_id=user.id)
     elif get_otp == otp and 'verify-login-otp' in request.path:
             login(request, user)
             messages.success(request, 'OTP verification successful. Login successful.')
@@ -103,9 +118,10 @@ def verify_otp(request,user_id=0) :
     else:
       messages.error(request, 'Invalid OTP')
       return redirect('verify_otp', user_id=user.id)
-  return render(request, 'userviews/verify_otp.html')
+      
+  return render(request,'userviews/verify_otp.html')
 
-@never_cache
+# @never_cache
 def user_login(request) :
   if request.user.is_authenticated:
     return redirect('home')
@@ -131,7 +147,8 @@ def forgot_password(request) :
         try:
             user = CustomUser.objects.get(email=email)
             print(user)
-            otp = get_random_string(length=4, allowed_chars='123456789')
+            totp = pyotp.TOTP(pyotp.random_base32())
+            otp = totp.now()
             user.save()
             request.session['otp'] = otp
             subject = 'OTP for Reset Password'
@@ -171,7 +188,8 @@ def login_with_otp(request) :
     email = request.POST['email']
     user = CustomUser.objects.get(email=email)
     if user:
-      otp = get_random_string(length=4 , allowed_chars='123456789')
+      totp = pyotp.TOTP(pyotp.random_base32())
+      otp = totp.now()
       user.save()
       request.session['otp'] = otp
       subject = 'OTP for Login'
