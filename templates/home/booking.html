@@ -1,0 +1,230 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+{% include 'includes/navbar.html' %}
+
+<style>
+  /* Styling for date boxes */
+  .date-box {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 5px;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+  }
+  a{
+    text-decoration:None;
+    color:black;
+  }
+
+  .date-box.checked {
+    background-color: red;
+    color: white;
+  }
+
+  /* Styling when date box is clicked */
+  .date-box.active {
+    background-color: #007bff;
+    color: #fff;
+  }
+
+  /* Additional styles to improve appearance */
+  .date-box label {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  /* Clear floats for row */
+  .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  .slot-box {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 5px;
+    width: 350px;
+    text-align: center;
+    display: inline-block;
+  }
+    .change-link {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: #007bff;
+      font-weight: bold;
+      text-decoration: none;
+    }
+</style>
+<!-- booking_form.html -->
+
+<h1>Booking</h1>
+
+<article class="card mb-4">
+  <div class="card-body">
+    <h4 class="card-title mb-4">Review cart</h4>
+    <div class="row">
+      <div class="col-md-6">
+        <figure class="itemside mb-4">
+            <p>Package: {{book.name}}</p>
+            <p>Price: ${{book.price}}</p>
+        </figure>
+      </div> <!-- col.// -->
+    </div> <!-- row.// -->
+    <a href="{% url 'packages' %}" class="change-link">Change</a>
+  </div> <!-- card-body.// -->
+</article>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10">
+      <div class="card">
+        <!-- Card header -->
+        <div class="card-header">
+          Booking
+        </div>
+        <!-- Card body -->
+      <div class="card-body">
+        <form method="post"  >
+          {% csrf_token %}
+          <div>
+              <h3>Car Details :</h3>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                  <label for="make">Make:</label>
+                  {{form.make}}
+                </div>
+              </div>
+              
+              <!-- Column 2 -->
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="model">Model:</label>
+                  {{form.model}}
+                </div>
+              </div>
+            </div>
+              <div class="row">
+
+                <!-- Column 3 -->
+                <div class="col-md-4">
+                <div class="form-group">
+                  <label for="registration_no">Vehicle No:</label>
+                   {{form.vehicle_no}}
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <input type="hidden" id="selected_date" name="selected_date" value="">
+              <h3>Select Date and Time of Service :</h3>
+              <div class="container">
+                <div class="row mt-3">
+                  {% for date_choice in date_list %}
+                    <div class="col-md-2">
+                      <div id="{{ date_choice }}" onClick="handleDate('{{ date_choice }}')" class="date-box form-group" data-date="{{ date_choice }}">
+                        <label>{{ date_choice|date:"D d" }}</label>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 mt-3">
+            <input type="hidden" id="selected_slot" name="selected_slot" value="">
+              <h4 class="mb-3">Pick Time Slot <small>(14 Slots Available)</small></h4>
+              <div class="form-group" id="time" >
+                <h3 class="mt-3">Early Morning Slot</h3>
+                {% for s in morning_slot %}
+                <div onclick="handleTime({{ s.pk }})" id="{{ s.pk }}" class="slot-box">
+                  {{ s.available_slots }}
+                </div>
+                  
+                {% endfor %}
+                
+                
+                <h3 class="mt-3">Afternoon Slot</h3>
+                {% for s in afternoon_slot %}
+                <div onclick="handleTime({{ s.pk }})" id="{{ s.pk }}" class="slot-box">
+                  {{ s.available_slots }}
+                </div>
+       
+                {% endfor %}
+                
+                <h3 class="mt-3" >Evening Slot</h3>
+                {% for s in evening_slot %}
+                <div onclick="handleTime({{ s.pk }})" id="{{ s.pk }}" class="slot-box">
+                  {{ s.available_slots }}
+                </div>
+                </a>
+                  {% endfor %}  
+               
+                </div>
+              </div>
+          </div> 
+        </div>
+
+            
+          
+            <button type="submit" class="btn btn-dark">Continue</button>
+
+        </form>
+          <!-- You can add more content here -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
+
+<script>
+  function handleDate(date) {
+    var elements = document.getElementsByClassName('date-box form-group');
+  
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].style.backgroundColor = 'white';
+    }
+  
+    var myDiv = document.getElementById(date);
+    myDiv.style.backgroundColor = 'red';
+  
+    const dateObj = new Date(date);
+
+    // Format the date to YYYY-MM-DD
+    const formattedDate = dateObj.toISOString().split('T')[0];
+
+    // Set the formatted date to the selected_date field
+    document.getElementById('selected_date').value = formattedDate;
+    console.log(formattedDate);
+  }
+  
+
+  function handleTime(slotId){
+    
+    var elements = document.getElementsByClassName('slot-box');
+    
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].style.backgroundColor = 'white';
+    }
+
+    var myDiv = document.getElementById(slotId)
+
+    var hi = myDiv.innerHTML;
+  
+    myDiv.style.backgroundColor = 'red';
+  
+    document.getElementById('selected_slot').value = slotId; // Set the slotId directly
+    console.log(slotId)
+  }
+</script>
+
+
+{% endblock content %}
+
+
+
+

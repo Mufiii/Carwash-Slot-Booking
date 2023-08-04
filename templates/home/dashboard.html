@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+{% include 'includes/navbar.html' %}
+
+<section class="section-conten padding-y bg mt-5">
+
+    <div class="container">
+        <div class="row">
+        <aside class="col-md-3">
+            <!--   SIDEBAR   -->
+            <ul class="list-group">
+                <a class="list-group-item active" href="#"> Dashboard</a>
+                <a class="list-group-item" href="#"> My orders </a>
+                <a class="list-group-item" href="#"> Edit Profile </a>
+                <a class="list-group-item" href="#">Change Password</a>
+            </ul>
+            <br>
+            <a class="btn btn-light btn-block" href="{% url 'logout' %}"> <i class="fa fa-power-off"></i> <span class="text">Log out</span> </a> 
+            <!--   SIDEBAR .//END   -->
+        </aside>
+        <main class="col-md-9">
+            <article class="card">
+            <header class="card-header">
+                <strong class="d-inline-block mr-3">Logged in as :</strong>
+                <span>{{user.first_name}}</span>
+            </header>
+            <div class="card-body">
+                <div class="row"> 
+                   <div class="col-md-6">
+                        <div class="card" style="text-align:center;">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Orders</h5>
+                                <h4>100</h4>
+                                <a href="">View Orders</a>
+                            </div>
+                        </div>
+                   </div>
+                   <div class="col-md-6">
+                        <div class="card" style="text-align:center;">
+                            <div class="card-body">
+                                <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Profile Picture" width="50" height="50" style="border-radius:50%;">
+                                <p class="mb-0">{{user.email}}</p>
+                                <p>{{user.phone}}</p>
+                            </div>
+                        </div>
+                   </div>
+                </div> <!-- row.// -->
+            </div> <!-- card-body .// -->
+            </article> <!-- order-group.// --> 
+        </main>
+    </div> <!-- row.// -->
+    </div>
+    
+    
+    </section>
+
+
+
+{% endblock content %}
+
+
+

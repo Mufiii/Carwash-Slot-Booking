@@ -1,3 +1,5 @@
+from django.core.cache import cache
+import time
 from django.shortcuts import redirect, render
 from django.urls import path
 from django.contrib.auth import authenticate,login
@@ -29,45 +31,30 @@ def register(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             confirm_password = form.cleaned_data['confirm_password']
-            if len(username) >= 5 and re.match(r'^[A-Za-z]', username):
-              if len(password) >= 8 and re.search(r'[A-Z].*[a-z].*\d', password):
-                  if password == confirm_password :
-                    if re.match(r'^\d{10}$', phone) and not re.search(r'\D', phone):
-                      # Generate OTP
-                      totp = pyotp.TOTP(pyotp.random_base32())
-                      otp = totp.now()
-                      request.session['otp'] = otp
-                      user = CustomUser.objects.create_user(
-                          first_name=first_name,
-                          last_name=last_name,
-                          email=email,
-                          phone=phone,
-                          username=username,
-                          password=password
-                      )
-                      subject = 'OTP for Account verification'
-                      message = f'Your OTP for Account Verification {otp}'
-                      email_from = settings.EMAIL_HOST_USER
-                      recipient_list = [email]
-                      send_email(subject,message,email_from,recipient_list)
-                      
-                      
-                      user.save()
-                            
-                      # Redirect to the OTP verification page
-                      return redirect('verify_otp', user_id=user.id)
-                      
-                    else:
-                      messages.error(request, "Phone number must be 10 digits")
-                  else:
-                    messages.error(request, "Password does not match")
-              else:
-                  messages.error(request,"Password should contain at least one uppercase letter, one lowercase letter, and one digit")
-            else:            
-              messages.error(request, "Username must contain at least 5 characters")
+            # Generate OTP
+            totp = pyotp.TOTP(pyotp.random_base32())
+            otp = totp.now()
+            request.session['otp'] = otp
+            user = CustomUser.objects.create_user(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                phone=phone,
+                username=username,
+                password=password
+            )
+            subject = 'OTP for Account verification'
+            message = f'Your OTP for Account Verification {otp}'
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [email]
+            send_email(subject,message,email_from,recipient_list)
+                   
+            user.save()
+                  
+            # Redirect to the OTP verification page
+            return redirect('verify_otp', user_id=user.id)              
         else:
-          messages.error(request,"Invalid Data")  
-          
+          messages.error(request,"Invalid Data")    
     else: 
         form = RegistrationForm()
     return render(request, 'userviews/register.html', {'form': form})
@@ -121,22 +108,27 @@ def verify_otp(request,user_id=0) :
       
   return render(request,'userviews/verify_otp.html')
 
-# @never_cache
+
+
 def user_login(request) :
-  if request.user.is_authenticated:
-    return redirect('home')
-  elif request.method == 'POST' :
-    email = request.POST.get('email')
-    password = request.POST.get('password')
-    user = authenticate(email=email,password=password)
-    print(user)
-    if user is not None :
-      login(request,user)
-      # send_email(subject, message, sender, recipient_list)
-      return redirect('home')
-    else:
-      messages.error(request ,'Invalid Email or Password')
-  return render(request, 'userviews/login.html' )
+    if request.user.is_authenticated:
+          return redirect('home')
+    if request.method == 'POST' :
+          email = request.POST.get('email')
+          password = request.POST.get('password')
+          user = authenticate(email=email,password=password)
+          print(user)
+          if user is not None :
+            login(request,user)
+            # send_email(subject, message, sender, recipient_list)
+            return redirect('home')
+          else:
+            messages.error(request ,'Invalid Email or Password')
+    # elif request.method == 'GET':
+    #       logout(request)
+    #       return redirect('home')
+        
+    return render(request, 'userviews/login.html' )
 
 
 #forgot Password
@@ -176,6 +168,7 @@ def reset_password(request,user_id) :
       print(password)
       return redirect("login")
   return render(request,'userviews/reset_password.html', {'user':user})
+
 
 @login_required(login_url='login')
 @never_cache

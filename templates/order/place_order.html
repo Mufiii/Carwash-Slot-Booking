@@ -1,0 +1,281 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% include 'includes/navbar.html' %}
+
+<style>
+  .change-link {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #007bff;
+    font-weight: bold;
+    text-decoration: none;
+  }
+</style>
+
+<section class="section-content padding-y bg">
+  <div class="container mt-3">
+    
+    <article class="card mb-4">
+      <div class="card-body">
+        <h4 class="card-title mb-4">Review cart</h4>
+        <div class="row">
+          <div class="col-md-6">
+            <figure class="itemside mb-4">
+              <p>Date: {{   order.slot_booking.booking_date }}</p>
+              <p>Time: {{ order.slot_booking.slot }}</p>
+            </figure>
+          </div> <!-- col.// -->
+        </div> <!-- row.// -->
+        <a href="{% url 'packages'  %}" class="change-link">Change</a>
+      </div> <!-- card-body.// -->
+    </article>
+
+
+    <!-- ============================ COMPONENT 2 ================================= -->
+    <div class="row">
+      <main class="col-md-8">
+        <article class="card mb-4">
+          <div class="card-body">
+            <h4 class="card-title mb-4">Contact info</h4>
+            <form method="POST">
+              {% csrf_token %}
+              {{ form.as_p }} 
+            </div> <!-- card-body.// -->
+          </article> <!-- card.// -->
+        </main> <!-- col.// -->
+        <aside class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <dl class="dlist-align">
+                <dt>Total price:</dt>
+                <dd class="text-right">{{ packages.price}}</dd>
+              </dl>
+              {% comment %} <dl class="dlist-align">
+                <dt>Tax:</dt>
+                <dd class="text-right"> $10.00</dd>
+              </dl>
+            <dl class="dlist-align">
+              <dt>Total:</dt>
+              <dd class="text-right text-dark b"><strong>$59.97</strong></dd>
+            </dl> {% endcomment %}
+            <hr>
+            <p class="text-center mb-3">
+              <img src="./images/misc/payments.png" height="26">
+            </p>
+            <button type="submit" class="btn btn-primary btn-block"> Place Order </button>
+          </div> <!-- card-body.// -->
+        </div> <!-- card.// -->
+      </aside> <!-- col.// -->
+    </div> <!-- row.// -->
+  </form>
+    
+    <!-- ============================ COMPONENT 2 END//  ================================= -->
+
+  </div> <!-- container .//  -->
+</section>
+
+{% comment %} <section class="section-content padding-y bg">
+  <div class="container mt-3">
+  
+  
+  
+  <!-- ============================ COMPONENT 2 ================================= -->
+  <div class="row">
+      <main class="col-md-8">
+  
+  {% comment %} <article class="card mb-4">
+  <div class="card-body">
+    <h4 class="card-title mb-4">Review cart</h4>
+    <div class="row">
+      <div class="col-md-6">
+        <figure class="itemside  mb-4">
+          <div class="aside"><img src="./images/items/1.jpg" class="border img-sm"></div>
+          <figcaption class="info">
+            <p>Apple iPad (2019) 32Gb Wi-Fi gold </p>
+            <span class="text-muted">2x = $560 </span>
+          </figcaption>
+        </figure>
+      </div> <!-- col.// -->
+      <div class="col-md-6">
+        <figure class="itemside  mb-4">
+          <div class="aside"><img src="./images/items/2.jpg" class="border img-sm"></div>
+          <figcaption class="info">
+            <p>Apple iPad (2019) 32Gb Wi-Fi gold </p>
+            <span class="text-muted">2x = $560 </span>
+          </figcaption>
+        </figure>
+      </div> <!-- col.// -->
+      <div class="col-md-6">
+        <figure class="itemside mb-4">
+          <div class="aside"><img src="./images/items/3.jpg" class="border img-sm"></div>
+          <figcaption class="info">
+            <p>Apple iPad (2019) 32Gb Wi-Fi gold </p>
+            <span class="text-muted">2x = $560 </span>
+          </figcaption>
+        </figure>
+      </div> <!-- col.// -->
+      <div class="col-md-6">
+        <figure class="itemside  mb-4">
+          <div class="aside"><img src="./images/items/4.jpg" class="border img-sm"></div>
+          <figcaption class="info">
+            <p>Apple iPad (2019) 32Gb Wi-Fi gold </p>
+            <span class="text-muted">2x = $560 </span>
+          </figcaption>
+        </figure>
+      </div> <!-- col.// -->
+    </div> <!-- row.// -->
+  </div> <!-- card-body.// -->
+  </article> <!-- card.// -->
+   {% endcomment %}
+  
+  {% comment %} <article class="card mb-4">
+  <div class="card-body">
+    <h4 class="card-title mb-4">Contact info</h4>
+    <form method="POST">
+      {% csrf_token %}
+      <div class="row">
+        <div class="form-group col-sm-6">
+          <div class="form-group col-sm-6">
+            <label for="first_name">First name</label>
+            {{ form.first_name }}
+          </div>
+        </div>
+        <div class="form-group col-sm-6">
+          <label for="last_name">Last name</label>
+          {{ form.last_name }}
+        </div>
+        <div class="form-group col-sm-6">
+          <label for="phone">Phone</label>
+          {{ form.phone }}
+        </div>
+        <div class="form-group col-sm-6">
+          <label for="email">Email</label>
+          {{ form.email }}
+        </div>
+        <div class="form-group col-sm-12">
+          <label for="address">Address</label>
+          {{form.address}}
+        </div>
+        <div class="form-group col-sm-4">
+          <label for="city">City</label>
+          {{ form.city }}
+        </div>
+        <div class="form-group col-sm-4">
+          <label for="state">State</label>
+          {{ form.state }}
+        </div>
+        <div class="form-group col-sm-4">
+          <label for="country">Country</label>
+          {{ form.country }}
+        </div>
+        <div class="form-group col-sm-12">
+          <label for="order_note">Any Special Instructions</label>
+          {{ form.order_note }}
+        </div> 
+      </div> <!-- row.// -->	
+    </form>
+  </div> <!-- card-body.// -->
+  </article> <!-- card.// --> {% endcomment %}
+  
+  
+  {% comment %} <article class="card mb-4">
+    <div class="card-body">
+      <h4 class="card-title mb-4">Delivery info</h4>
+      <form method="POST" >
+        {% csrf_token %}
+        <div class="row">
+          
+        </div> <!-- row.// -->	
+        <button type="submit" class="btn btn-primary">Submit Delivery Info</button>
+      </form>
+    </div> <!-- card-body.// -->
+  </article> <!-- card.// --> {% endcomment %}
+  
+  
+  {% comment %} <article class="accordion" id="accordion_pay">
+    <div class="card">
+      <header class="card-header">
+        <img src="./images/misc/payment-paypal.png" class="float-right" height="24"> 
+        <label class="form-check collapsed" data-toggle="collapse" data-target="#pay_paynet">
+          <input class="form-check-input" name="payment-option" checked type="radio" value="option2">
+          <h6 class="form-check-label"> 
+            Paypal 
+          </h6>
+        </label>
+      </header>
+      <div id="pay_paynet" class="collapse show" data-parent="#accordion_pay">
+      <div class="card-body">
+        <p class="text-center text-muted">Connect your PayPal account and use it to pay your bills. You'll be redirected to PayPal to add your billing information.</p>
+        <p class="text-center">
+          <a href="#"><img src="./images/misc/btn-paypal.png" height="32"></a>
+          <br><br>
+        </p>
+      </div> <!-- card body .// -->
+      </div> <!-- collapse .// -->
+    </div> <!-- card.// -->
+    <div class="card">
+    <header class="card-header">
+      <img src="./images/misc/payment-card.png" class="float-right" height="24">  
+      <label class="form-check" data-toggle="collapse" data-target="#pay_payme">
+        <input class="form-check-input" name="payment-option" type="radio" value="option2">
+        <h6 class="form-check-label"> Credit Card  </h6>
+      </label>
+    </header>
+    <div id="pay_payme" class="collapse" data-parent="#accordion_pay">
+      <div class="card-body">
+        <p class="alert alert-success">Some information or instruction</p>
+        <form class="form-inline">
+          <input type="text" class="form-control mr-2" placeholder="xxxx-xxxx-xxxx-xxxx" name="">
+          <input type="text" class="form-control mr-2" style="width: 100px"  placeholder="dd/yy" name="">
+          <input type="number" maxlength="3" class="form-control mr-2"  style="width: 100px"  placeholder="cvc" name="">
+          <button class="btn btn btn-success">Button</button>
+        </form>
+      </div> <!-- card body .// -->
+    </div> <!-- collapse .// -->
+    </div> <!-- card.// -->
+    
+  </article>  {% endcomment %}
+  <!-- accordion end.// -->
+    
+      {% comment %} </main> <!-- col.// --> {% endcomment %}
+      {% comment %} <aside class="col-md-4">
+        <div class="card">
+      <div class="card-body">
+        <dl class="dlist-align">
+          <dt>Total price:</dt>
+          <dd class="text-right">$69.97</dd>
+        </dl>
+        <dl class="dlist-align">
+          <dt>Tax:</dt>
+          <dd class="text-right"> $10.00</dd>
+        </dl>
+        <dl class="dlist-align">
+          <dt>Total:</dt>
+          <dd class="text-right text-dark b"><strong>$59.97</strong></dd>
+        </dl>
+        <hr>
+        <p class="text-center mb-3">
+          <img src="./images/misc/payments.png" height="26">
+        </p>
+        {% comment %} <a href="./place-order.html" class="btn btn-primary btn-block"> Place Order </a> {% endcomment %}
+        {% comment %} <button type="submit" class="btn btn-primary btn-block"> Place Order </button>
+        
+      </div> <!-- card-body.// -->
+      </div> <!-- card.// -->
+      </aside> <!-- col.// -->
+    </div> <!-- row.// -->
+  
+  <!-- ============================ COMPONENT 2 END//  ================================= -->
+  
+  
+  
+  
+  </div> <!-- container .//  -->
+  </section>  {% endcomment %}
+
+{% endblock content %}
+
+

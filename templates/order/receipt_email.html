@@ -1,0 +1,24 @@
+{% autoescape off %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Booking Receipt</title>
+</head>
+<body>
+    <h2>Booking Receipt</h2>
+    <p>Hello {{ user.first_name }},</p>
+    <p>Thank you for your booking. Here are the details of your booking:</p>
+    <p>Booking ID: {{ booking.id }}</p>
+    <p>Amount Paid: {{ amount_paid }}</p>
+    <p>Payment Status: {{ razor_pay_status }}</p>
+
+    <p>If you have any questions or need further assistance, please feel free to contact us.</p>
+    <p>Thank you for choosing us! We look forward to hosting you.</p>
+
+    <p>Best regards,</p>
+    <p>Your Booking Team</p>
+</body>
+</html>
+
+
+{% endautoescape %}

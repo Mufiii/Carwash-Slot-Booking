@@ -13,7 +13,7 @@
         <a class="nav-link" href="#">About Us</a>
       </li>
       <li class="nav-item dropdown">
-          <a class="nav-link" href="#">Packages</a>
+          <a class="nav-link" href="{% url 'packages' %}">Packages</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">Franchise</a>
@@ -30,7 +30,7 @@
     </ul>
     <form class="form-inline my-2 my-lg-0">
       {% if user.is_authenticated %}
-          <a href="{% url 'user_profile' %}"><i class="fa-solid fa-user pl-4 pr-3"></i></a>
+          <a href="{% url 'dashboard' %}"><i class="fa-solid fa-user pl-4 pr-3"></i></a>
       {% else %}
           <a href="{% url 'login' %}"><i class="fa-solid fa-user pl-4 pr-3"></i></a>
       {% endif %}

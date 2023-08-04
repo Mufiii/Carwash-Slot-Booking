@@ -22,6 +22,11 @@
                   <a href="{% url 'forgot' %}" class="float-right mb-3">Forgot password?</a> 
 
               </div> <!-- form-group form-check .// -->
+              <div>
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+              </div>
               <div class="form-group">
                   <button type="submit" class="btn btn-primary btn-block btn-dark"> Login  </button>
               </div> <!-- form-group// --> 
@@ -30,6 +35,7 @@
                   <Button type="submit" class="btn btn-primary btn-block btn-dark"><a href="{% url 'login_with_otp' %}" style="text-decoration: none; color: inherit; display: block; width: 100%; height: 100%;">Login With OTP</Button>
               </div>   
           </form>
+              
           </div> <!-- card-body.// -->
         </div> <!-- card .// -->
 

@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'includes/navbar.html' %}
+
+<style>
+  .package-image {
+    padding-right: 0; 
+  }
+  
+  .img {
+    max-width: 30%;
+    max-height: 30%;
+  }
+
+  .package-item {
+    display: flex;
+    align-items: flex-start; /* Adjust alignment */
+    margin-bottom: 20px; /* Adjust the vertical gap between items */
+  }
+  {% comment %} .add-to-cart-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+  } {% endcomment %}
+
+  .package-details {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  .price-wrap {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .package-column {
+    flex: 0 0 110%;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .package-info {
+    display: flex;
+    align-items: flex-start;
+    margin-left: 10px; /* Adjust the gap between image and text */
+  }
+  
+  /* Add this style to align radio buttons with the package details */
+  .package-radio {
+    display: flex;
+    align-items: center;
+  }
+  
+  .package-radio label {
+    margin-right: 10px;
+  }
+  .button-row {
+    display: flex;
+    justify-content: center; /* Horizontally center the buttons */
+    align-items: center; /* Vertically center the buttons */
+  }
+  
+  .button-row button {
+    /* Add any additional styles for the buttons if needed */
+    margin: 5px;
+  }
+
+</style>
+
+<h4>Scheduled Packages</h4>
+
+<form method="POST"  id="packageForm">
+  {% csrf_token %}
+  <div class="button-row">
+    <div class="button-row">
+      <button name="package" value='reguler' type="submit" class="btn btn-primary vehicle-btn" >Regular Size Car</button>
+      <button name="package" value='medium' type="submit" class="btn btn-warning vehicle-btn">Medium Size Car</button>
+      <button name="package" value='compact' type="submit" class="btn btn-dark vehicle-btn">Compact SUV</button>
+      <button name="package" value='sports' type="submit" class="btn btn-danger vehicle-btn">Sports Car</button>
+    </div>
+  </div>
+</form>
+
+<div class="row mt-4">
+  <aside class="col-lg-9 mx-auto">
+    <div class="card">
+      <table class="table table-borderless table-shopping-cart">
+        <thead class="text-muted">
+          <tr class="small text-uppercase">
+            <th scope="col">Product</th>
+            <th scope="col" class="text-right">Vehicle Type</th>
+            <th scope="col" class="text-right">Price</th>
+            <th scope="col" class="text-right"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for package in packages %}
+          <tr>
+            <td>                            
+              <div class="d-flex align-items-start package-info">
+                <img class="img img-sm" src="{{ package.image.url }}" alt="{{ package.name }}">
+                <div class="card-body">
+                  <!-- Package Details -->
+                  <h4 class="">{{ package.name }}</h4>
+                  <div class="package-details">
+                    <div class="package-column">
+                      <ul>
+                        <li>Exterior Wash</li>
+                        <li>Interior Vacuuming</li>
+                        <li>Tire and Wheel Cleaning</li>
+                        <li>Interior Wiping and Dusting</li>
+                      </ul>
+                    </div>
+                    <div class="package-column">
+                      <ul>
+                        <li>Glass and Mirror Cleaning</li>
+                        <li>Fragrance</li>
+                        <li>Air Filter Cleaning</li>
+                        <li>Spectrum</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!-- End Package Details -->
+                </div>
+              </div>
+            </td> 
+            
+            <td class="package-radio"> <!-- Use the package-radio class to align the radio buttons -->
+              <div class="form-check form-check-inline">
+                <input class="form-check-input base-price-radio" type="radio" name="vehicle_type_{{ package.id }}" id="sedan_{{ package.id }}" value="Sedan" checked data-price="{{ package.price }}" data-base-price="{{ package.price }}">
+                <label class="form-check-label" for="sedan_{{ package.id }}">Sedan</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="vehicle_type_{{ package.id }}" id="coupe_{{ package.id }}" value="Coupe" data-price="{{ package.price }}">
+                <label class="form-check-label" for="coupe_{{ package.id }}">Coupe</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="vehicle_type_{{ package.id }}" id="suv_{{ package.id }}" value="SUV" data-price="{{ package.price }}">
+                <label class="form-check-label" for="suv_{{ package.id }}">SUV</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="vehicle_type_{{ package.id }}" id="sports_car_{{ package.id }}" value="Sports Car" data-price="{{ package.price }}">
+                <label class="form-check-label" for="sports_car_{{ package.id }}">Sports Car</label>
+              </div>
+            </td>
+            
+            <td class="text-right">
+              <div class="price-wrap">
+                <var class="price">${{ package.price }}</var>
+              </div>
+              <div class="add-to-cart-btn">
+                <a href="{% url 'booking' package.id  %} " class="btn btn-success">Book Now</a>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div> <!-- card.// -->
+  </aside> <!-- col.// -->
+</div> <!-- row.// -->
+  <script>
+    // Wait for the document to be ready
+    document.addEventListener("DOMContentLoaded", function() {
+      // Get the form element
+      const form = document.getElementById("packageForm");
+
+      // Set the default value to 'reguler' (Regular Size Car)
+      form.package.value = 'reguler';
+    });
+  </script>
+
+
+{% endblock content %}

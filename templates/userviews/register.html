@@ -1,5 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
+
+<style>
+
+  .form-errors {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+    border-radius: 5px;
+}
+
+.form-errors ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.form-errors li {
+    padding-left: 10px;
+    margin-bottom: 5px;
+}
+
+</style>
+
+
 <section class="section-content padding-y">
   <div class="card mx-auto" style="max-width: 520px; margin-top: 40px">
     <article class="card-body">
@@ -7,17 +32,17 @@
         <h4 class="card-title">Sign up</h4>
       </header>
       <form method="POST" action="{% url 'register' %}">
-        {% csrf_token %} {{ form.as_p }} {% include 'includes/formerror.html' %}
+        {% csrf_token %} {{ form.as_p }}
 
         <div class="form-group col-md-12">
-          {% for message in messages %}
+          {% comment %} {% for message in messages %}
               {% if message.tags == "success" %}
                   <div class="text-success alert alert-success font-weight-bold" role="alert" id="message-alert">{{message}}</div>
               {% endif %}
               {% if message.tags == "error" %}
                   <div class="text-danger alert alert-danger font-weight-bold" role="alert" id="message-alert">{{message}}</div>
               {% endif %}
-          {% endfor %}
+          {% endfor %} {% endcomment %}
 
       </div> 
         <div class="form-group">
@@ -25,7 +50,12 @@
             Register
           </button>
         </div>
-        <!-- form-group end.// -->
+            {% comment %} {{ forms.email.errors }}
+            {{ forms.username.errors }}
+            {{ forms.password.errors }}
+            {{ forms.errors }}
+            {{ form.non_field_errors }} {% endcomment %}
+   
       </form>
     </article>
     <!-- card-body.// -->
@@ -36,7 +66,7 @@
   </p>
 </section>
 
- {% comment %} <script>
+<script>
   setTimeout(function () {
     var messageAlerts = document.querySelectorAll("#message-alert");
     if (messageAlerts) {
@@ -45,6 +75,6 @@
       });
     }
   }, 8000);
-</script> {% endcomment %}
+</script>
 
 {% endblock content %} 

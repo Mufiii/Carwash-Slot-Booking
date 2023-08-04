@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+{% include 'includes/navbar.html' %}
+
+<style>
+
+	.img {
+    max-width: 50%;
+    max-height: 50%;
+  }
+
+</style>
+
+<section class="section-content padding-y bg">
+<div class="container">
+
+<!-- ============================ COMPONENT 1 ================================= -->
+
+<div class="row mt-4">
+	<aside class="col-lg-9">
+<div class="card">
+<table class="table table-borderless table-shopping-cart">
+<thead class="text-muted">
+<tr class="small text-uppercase">
+  <th scope="col">Product</th>
+  <th scope="col" width="120"></th>
+  <th scope="col" width="120">Price</th>
+  <th scope="col" class="text-right" width="200"> </th>
+</tr>
+</thead>
+<tbody>
+	{% for cart_item in cart_items %}
+	<tr>
+		<td>
+			<figure class="itemside align-items-center">
+				<div class="aside"><img src="{{cart_item.product.image.url}}" class="img img-sm"></div>
+				<figcaption class="info">
+					<a href="#" class="title text-dark">{{cart_item.product.name}}</a>
+					{% comment %} <p class="text-muted small">Matrix: 25 Mpx <br> Brand: Canon</p> {% endcomment %}
+				</figcaption>
+			</figure>
+		</td>
+		{% comment %} <td> 
+			<!-- col.// -->
+			<div class="col"> 
+				<div class="input-group input-spinner">
+					<div class="input-group-prepend">
+						<button class="btn btn-light" type="button" id="button-plus"> <i class="fa fa-minus"></i> </button>
+					</div>
+					<input type="text" class="form-control"  value="1">
+					<div class="input-group-append">
+						<button class="btn btn-light" type="button" id="button-minus"> <i class="fa fa-plus"></i> </button>
+					</div>
+				</div> <!-- input-group.// -->
+			</div> <!-- col.// -->
+		</td> {% endcomment %}
+		<td> 
+			<div class="price-wrap"> 
+				<var class="price">${{cart_item.product.price}}</var> 
+				{% comment %} <small class="text-muted"> $315.20 each </small>  {% endcomment %}
+			</div> <!-- price-wrap .// -->
+		</td>
+	<td class="text-right"> 
+	<a href="{% url 'remove_cart' cart_item.product.id %}" class="btn btn-danger"> Remove</a>
+</td>
+</tr>
+{% endfor %}
+
+</tbody>
+</table>
+</div> <!-- card.// -->
+
+</aside> <!-- col.// -->
+	<aside class="col-lg-3">
+
+		<div class="card">
+		<div class="card-body">
+			{% comment %} <dl class="dlist-align">
+			  <dt>Total price:</dt>
+			  <dd class="text-right">${{totel}}</dd>
+			</dl>
+			<dl class="dlist-align">
+			  <dt>Tax:</dt>
+			  <dd class="text-right"> $10.00</dd>
+			</dl> {% endcomment %}
+			<dl class="dlist-align">
+			  <dt>Total:</dt>
+			  <dd class="text-right text-dark b"><strong>{{totel}}</strong></dd>
+			</dl>
+			<hr>
+			<p class="text-center mb-3">
+				<img src="./images/misc/payments.png" height="26">
+			</p>
+			<a href="./place-order.html" class="btn btn-primary btn-block"> Checkout </a>
+			<a href="./store.html" class="btn btn-light btn-block">Continue Shopping</a>
+		</div> <!-- card-body.// -->
+		</div> <!-- card.// -->
+
+</aside> <!-- col.// -->
+
+
+</div> <!-- row.// -->
+<!-- ============================ COMPONENT 1 END .// ================================= -->
+
+</div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+</body>
+</html>
+
+{% endblock content %}
