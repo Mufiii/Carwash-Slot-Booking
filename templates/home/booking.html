@@ -59,37 +59,44 @@
       font-weight: bold;
       text-decoration: none;
     }
+    .content {
+      padding-top:100px;
+    }
+    .slot-box.booked {
+      background-color: red;
+    }
 </style>
 <!-- booking_form.html -->
 
-<h1>Booking</h1>
+<h1 class="text-center mt-3 ">Booking</h1>
 
+<section class="section-content padding-y bg content">
 <article class="card mb-4">
   <div class="card-body">
     <h4 class="card-title mb-4">Review cart</h4>
     <div class="row">
       <div class="col-md-6">
         <figure class="itemside mb-4">
-            <p>Package: {{book.name}}</p>
-            <p>Price: ${{book.price}}</p>
-        </figure>
-      </div> <!-- col.// -->
-    </div> <!-- row.// -->
-    <a href="{% url 'packages' %}" class="change-link">Change</a>
-  </div> <!-- card-body.// -->
-</article>
+            <p>Package: {{package.name}}</p>
+            <p>Price: {{ price }}</p>
+          </figure>
+        </div> <!-- col.// -->
+      </div> <!-- row.// -->
+      <a href="{% url 'packages'  %}" class="change-link">Change</a>
+    </div> <!-- card-body.// -->
+  </article>
 
 <div class="container">
   <div class="row">
     <div class="col-md-10">
       <div class="card">
         <!-- Card header -->
-        <div class="card-header">
+        <div class="card-header text-center">
           Booking
         </div>
         <!-- Card body -->
       <div class="card-body">
-        <form method="post"  >
+        <form method="post"   >
           {% csrf_token %}
           <div>
               <h3>Car Details :</h3>
@@ -121,13 +128,14 @@
             </div>
 
             <div class="mb-3">
-              <input type="hidden" id="selected_date" name="selected_date" value="">
+              <input type="hidden" id="selected_date" name="selected_date" value="" required>
               <h3>Select Date and Time of Service :</h3>
               <div class="container">
                 <div class="row mt-3">
                   {% for date_choice in date_list %}
                     <div class="col-md-2">
-                      <div id="{{ date_choice }}" onClick="handleDate('{{ date_choice }}')" class="date-box form-group" data-date="{{ date_choice }}">
+                      <div id="{{ date_choice }}" onClick="handleDate('{{ date_choice }}')" class="date-box form-group" data-date="{{ date_choice }}"
+                      style="{% if date_choice in booked_slots %}background-color: red;{% endif %}">
                         <label>{{ date_choice|date:"D d" }}</label>
                       </div>
                     </div>
@@ -135,14 +143,15 @@
                 </div>
               </div>
             </div>
+
             <div class="col-md-12 mt-3">
-            <input type="hidden" id="selected_slot" name="selected_slot" value="">
+            <input type="hidden" id="selected_slot" name="selected_slot" value="" required>
               <h4 class="mb-3">Pick Time Slot <small>(14 Slots Available)</small></h4>
               <div class="form-group" id="time" >
                 <h3 class="mt-3">Early Morning Slot</h3>
                 {% for s in morning_slot %}
-                <div onclick="handleTime({{ s.pk }})" id="{{ s.pk }}" class="slot-box">
-                  {{ s.available_slots }}
+                <div onclick="handleTime({{ s.pk }})" id="{{ s.pk }}" class="slot-box {% if s.is_booked %}booked{% endif %}">
+                  {{ s.available_slots }} 
                 </div>
                   
                 {% endfor %}
@@ -150,7 +159,7 @@
                 
                 <h3 class="mt-3">Afternoon Slot</h3>
                 {% for s in afternoon_slot %}
-                <div onclick="handleTime({{ s.pk }})" id="{{ s.pk }}" class="slot-box">
+                <div onclick="handleTime({{ s.pk }})" id="{{ s.pk }}" class="slot-box {% if s.is_booked %}booked{% endif %}" > 
                   {{ s.available_slots }}
                 </div>
        
@@ -158,7 +167,7 @@
                 
                 <h3 class="mt-3" >Evening Slot</h3>
                 {% for s in evening_slot %}
-                <div onclick="handleTime({{ s.pk }})" id="{{ s.pk }}" class="slot-box">
+                <div onclick="handleTime({{ s.pk }})" id="{{ s.pk }}" class="slot-box {% if s.is_booked %}booked{% endif %}" >
                   {{ s.available_slots }}
                 </div>
                 </a>
@@ -168,9 +177,8 @@
               </div>
           </div> 
         </div>
-
             
-          
+            <input type='hidden' name='price' value='{{ price }}' />
             <button type="submit" class="btn btn-dark">Continue</button>
 
         </form>
@@ -182,25 +190,30 @@
 </div> 
 
 <script>
+
   function handleDate(date) {
     var elements = document.getElementsByClassName('date-box form-group');
-  
+    var price = parseFloat("{{ price }}");
+
     for (var i = 0; i < elements.length; i++) {
       elements[i].style.backgroundColor = 'white';
     }
   
     var myDiv = document.getElementById(date);
-    myDiv.style.backgroundColor = 'red';
+    myDiv.style.backgroundColor = 'blue';
   
     const dateObj = new Date(date);
 
-    // Format the date to YYYY-MM-DD
-    const formattedDate = dateObj.toISOString().split('T')[0];
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObj.getDate()).padStart(2, '0');
+
+    // Construct the formatted date string in YYYY-MM-DD format
+    const formattedDate = `${year}-${month}-${day}`;
 
     // Set the formatted date to the selected_date field
     document.getElementById('selected_date').value = formattedDate;
-    console.log(formattedDate);
-  }
+    console.log(formattedDate);  }
   
 
   function handleTime(slotId){
@@ -214,12 +227,13 @@
     var myDiv = document.getElementById(slotId)
 
     var hi = myDiv.innerHTML;
-  
-    myDiv.style.backgroundColor = 'red';
+    
+    myDiv.style.backgroundColor = 'blue';
   
     document.getElementById('selected_slot').value = slotId; // Set the slotId directly
     console.log(slotId)
   }
+  
 </script>
 
 

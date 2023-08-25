@@ -2,7 +2,7 @@
 {% block content %}
 
 <style>
-
+  
   .form-errors {
     margin: 10px 0;
     padding: 10px;
@@ -10,71 +10,89 @@
     border: 1px solid #f5c6cb;
     color: #721c24;
     border-radius: 5px;
-}
-
-.form-errors ul {
+  }
+  
+  .form-errors ul {
     list-style-type: none;
     padding: 0;
-}
-
-.form-errors li {
+  }
+  
+  .form-errors li {
     padding-left: 10px;
     margin-bottom: 5px;
+  }
+  .signup {
+    color: black ;
+    text-decoration: none; 
 }
 
+/* Styling for the link on hover */
+.signup:hover {
+    color: grey; 
+    text-decoration: underline; 
+}
+  
 </style>
 
 
-<section class="section-content padding-y">
+<section class="section-content padding-y mt-5">
   <div class="card mx-auto" style="max-width: 520px; margin-top: 40px">
-    <article class="card-body">
+    <article class="card-body  mt-3">
+      {% comment %} {{ form.email.errors }}
+      {{ form.password.errors }}
+      {{ form.errors }}
+      {{ form.non_field_errors }} {% endcomment %}
       <header class="mb-4">
-        <h4 class="card-title">Sign up</h4>
-      </header>
-      <form method="POST" action="{% url 'register' %}">
-        {% csrf_token %} {{ form.as_p }}
+        <h2 class="card-title text-center">Sign up</h2>
+        {% include 'includes/alerts.html' %}
+          </header>
+          <form method="POST" action="{% url 'register' %}">
+            {% csrf_token %}
+            <div class="form-row">
+              <div class="form-group col-md-6">
+              <label>First Name</label>
+              {{form.first_name}}
+            </div>
+            <div class="form-group col-md-6">
+              <label>Last Name</label>
+              {{form.last_name}}
+            </div>
+            <div class="form-group col-md-6">
+              <label>Email</label>
+              {{form.email}}
+            </div>
+            <div class="form-group col-md-6">
+              <label>Phone</label>
+              {{form.phone}}
+            </div>
+            <div class="form-group col-md-12">
+              <label>Username</label>
+              {{form.username}}
+            </div>
+            <div class="form-group col-md-6">
+              <label>Password</label>
+              {{form.password}}
+            </div>
+            <div class="form-group col-md-6">
+              <label>Confirm Password</label>
+              {{form.confirm_password}}
+            </div>
 
-        <div class="form-group col-md-12">
-          {% comment %} {% for message in messages %}
-              {% if message.tags == "success" %}
-                  <div class="text-success alert alert-success font-weight-bold" role="alert" id="message-alert">{{message}}</div>
-              {% endif %}
-              {% if message.tags == "error" %}
-                  <div class="text-danger alert alert-danger font-weight-bold" role="alert" id="message-alert">{{message}}</div>
-              {% endif %}
-          {% endfor %} {% endcomment %}
+            <button type="submit" class="btn btn-primary btn-block btn-dark">
+              Register
+            </button>
+            
+          </form>
+      </article>
+      <!-- card-body.// -->
+    </div>
+    <!-- card .// -->
+    <p class="text-center mt-4">
+      Have an account? <a href="{% url 'login' %}" class="signup">Log In</a>
+    </p>
+  </section>
 
-      </div> 
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary btn-block btn-dark">
-            Register
-          </button>
-        </div>
-            {% comment %} {{ forms.email.errors }}
-            {{ forms.username.errors }}
-            {{ forms.password.errors }}
-            {{ forms.errors }}
-            {{ form.non_field_errors }} {% endcomment %}
-   
-      </form>
-    </article>
-    <!-- card-body.// -->
-  </div>
-  <!-- card .// -->
-  <p class="text-center mt-4">
-    Have an account? <a href="{% url 'login' %}">Log In</a>
-  </p>
-</section>
 
-<script>
-  setTimeout(function () {
-    var messageAlerts = document.querySelectorAll("#message-alert");
-    if (messageAlerts) {
-      messageAlerts.forEach(function (alert) {
-        alert.style.display = "none";
-      });
-    }
-  }, 8000);
-</script>
 
-{% endblock content %} 
+  {% endblock content %} 
+  

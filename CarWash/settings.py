@@ -25,6 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -42,11 +43,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'userview',
     'order',
-    'home','cart',
+    'home',
+    'BruteBuster'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'BruteBuster.middleware.RequestMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -79,18 +82,29 @@ WSGI_APPLICATION = 'CarWash.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'Carwash',
+#         'USER': 'postgres',
+#         'PASSWORD' : os.getenv('PASSWORD'),
+#         'HOST' : os.getenv('HOST'),
+#         'PORT': '5432', 
+#     }   
+# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'UserDb',
-        'USER': 'postgres',
-        'PASSWORD' : '786',
-        'HOST' : 'localhost',
-        'PORT': '5432', 
-    }   
+        'NAME': 'CarWash',
+        'USER': 'superuser',
+        'PASSWORD': 'Mufees$786',
+        'HOST': 'carwash.cx8iz7vopapg.eu-north-1.rds.amazonaws.com',
+        'PORT': '5432',
+    }
 }
 
 AUTH_USER_MODEL = 'userview.CustomUser'
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -127,9 +141,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR,'static')
-# ]
+
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR,'static')
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -145,10 +161,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # EMAIL CONFIGARATION
 
 EMAIL_HOST = os.getenv('EMAIL_HOST')
-EMAIL_PORT = 587
+EMAIL_PORT = os.getenv('EMAIL_PORT')
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 
-RAZOR_PAY_KEY_ID = 'rzp_test_eyvYTwQnjAf5vC'
-KEY_SECRET = 'YjSXjOm3boBdVvfpfCB7Atce'
+
+RAZOR_PAY_KEY_ID = os.getenv('RAZOR_PAY_KEY_ID')
+KEY_SECRET = os.getenv('KEY_SECRET')

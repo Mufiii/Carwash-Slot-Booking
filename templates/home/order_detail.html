@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+{% include 'includes/navbar.html' %}
+
+<h2 class="text-center mt-4">My Orders</h2>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% comment %} <title>Carwash Slot Orders</title> {% endcomment %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5 col-md-12">
+        {% comment %} <h1 class="text-center mb-4">Carwash Slot Orders</h1> {% endcomment %}
+        <!-- Repeat the following block for each order -->
+        <div class="card mb-3">
+            <div class="card-header">
+                My Order 
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+            </div>
+        </div>
+        <!-- Repeat the block above for each order -->
+    </div>
+</body>
+</html>
+
+
+{% comment %} <div class="container" style="margin: 0 auto;width: 50%;padding: 50px;background: #f1f1f1;margin-top: 50px;margin-bottom: 50px;">
+    <div class="row invoice row-printable">
+        <div class="col-md-12">
+            
+            <!-- col-lg-12 start here -->
+            <div class="panel panel-default plain" id="dash_0">
+                <!-- Start .panel -->
+                <div class="panel-body p30">
+                    <div class="row">
+                        <!-- Start .row -->
+                        <div class="col-lg-6">
+                            <!-- col-lg-6 start here -->
+                            <div><img src="{% static 'images/logo.png' %}" style="max-height: 60px "></div>
+                        </div>
+                        <!-- col-lg-6 end here -->
+                        <div class="col-lg-6">
+                            <!-- col-lg-6 start here -->
+                            <div class="invoice-from">
+                                <ul class="list-unstyled text-right">
+                                    <li><strong>Address</strong></li>
+                                    <li>{{order.full_name}}</li>
+                                    <li>{{order.address}}</li>
+                                    <li>{{order.city}} ,{{order.state}}</li>
+                                    <li>{{order.country}}</li>
+                                    {% comment %} <li></li> {% endcomment %}
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- col-lg-6 end here -->
+                        <div class="col-lg-12">
+                            <!-- col-lg-12 start here -->
+                            {% comment %} <div class="invoice-details mt25">
+                                <div class="well">
+                                    <ul class="list-unstyled mb0">
+                                        <li><strong>Order No :</strong>   {{order.order_number}}  </li>
+                                        <li><strong>Transaction ID :</strong>  {{order.payment.razorpay_payment_id}}</li>
+                                        <li><strong>Order Date:</strong>  {{order.created_at}}</li>
+                                        <li><strong>Status:</strong> PAID</li>
+                                    </ul>
+                                </div>
+                            </div> {% endcomment %}
+                           
+                            <div class="invoice-items">
+                                <div class="table-responsive" style="overflow: hidden; outline: none;" tabindex="0">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="per30 text-center">Order Number</th>
+                                                <th class="per30 text-center">Package</th>
+                                                <th class="per40 text-center">Slot Booking</th>
+                                                {% comment %} <th class="per20 text-center">Date</th> {% endcomment %}
+                                                <th class="per30 text-center">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% comment %} {% for item in ordered_product  %} {% endcomment %}
+                                                <tr>
+                                                    <td>{{order.order_number}}</td>
+                                                    
+                                                    <td>{{order_detail.package}}</td>
+                                            
+                                                    <td class="text-center">{{order.slot_booking}}</td>
+                                                    <td class="text-center">₹{{order.payment.amount_paid}}</td>
+                                                </tr>
+                                            {% comment %} {% endfor %} {% endcomment %}
+                                            </tbody>
+                                            <tfoot>
+                                                {% comment %} <tr>
+                                                    <th colspan="2" class="text-right">Sub Total:</th>
+                                                    <th class="text-center">₹{{ordered_product.price}} RUPEE</th>
+                                                </tr>
+                                                <tr>
+                                                    <th colspan="2" class="text-right">Tax:</th>
+                                                    <th class="text-center">₹{{order.tax}} RUPEE</th>
+                                                </tr> {% endcomment %}
+                                                
+                                                <tr>
+                                                    <th colspan="2" class="text-right">Grand Total:</th>
+                                                    <th class="text-center">₹{{order.payment.amount_paid}} RUPEE</th>
+                                                </tr>
+                                            </tfoot>
+                                    </table>
+                                </div>
+                                <form id="cancel-form-{{ order.id }}" action="{% url 'cancel_order' order.id %}" method="post">
+                                    {% csrf_token %}
+                                    {% if order.is_canceled %}
+                                        <a href="" class="btn btn-danger disabled float-right" >Order cancelled</a>
+                                    {% else %}
+                                        {% comment %} {% if time_difference_hours > 5 %} {% endcomment %}
+                                            <button type="button" name="cancel_order" class="btn btn-danger mx-auto float-right"  onclick="confirmCancel({{ order.id }})">Cancel Order</button>
+                                        {% comment %} {% else %} {% endcomment %}
+                                            {% comment %} <p class="text-danger float-right">Cancellation not allowed within 5 hours of slot time</p> {% endcomment %}
+                                        {% comment %} {% endif %} {% endcomment %}
+                                    {% endif %}
+                                    </form>
+                            </div>
+                        </div>
+                        <!-- col-lg-12 end here -->
+                    </div>
+                    <!-- End .row -->
+                </div>
+            </div>
+            <!-- End .panel -->
+        </div>
+        <!-- col-lg-12 end here -->
+        
+    </div>
+    </div> 
+
+    <script>
+
+    
+        function confirmCancel(orderId) {
+    
+            var confirmationModal = `
+                <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Confirm Order Cancellation</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to cancel this order?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="cancelOrder(${orderId})">Yes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+    
+            // Add the confirmation modal HTML to the page
+            document.body.insertAdjacentHTML('beforeend', confirmationModal);
+    
+            // Show the confirmation modal
+            $('#confirmationModal').modal('show');
+        }
+    
+        function cancelOrder(orderId) {
+            // Proceed with form submission to cancel the order
+            document.getElementById("cancel-form-" + orderId).submit();
+        }
+    </script>
+    
+
+
+{% endblock %}

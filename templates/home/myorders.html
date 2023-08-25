@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% include 'includes/navbar.html' %}
+
+<section class="section-content padding-y bg mt-5">
+
+{% include 'includes/alerts.html' %}
+
+    <div class="container">
+        <div class="row">
+        {% include 'includes/sidebar.html' %}
+        <main class="col-md-9">
+            <article class="card">
+            <header class="card-header">
+                <strong class="d-inline-block mr-3 ">Your order history</strong>
+
+            </header>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                      {% if orders %}
+                        <table class="table table-hover">
+                            <thead>
+                              <tr>
+                                <th scope="col">Order Number</th>
+                                <th scope="col">Billing Name</th>
+                                <th scope="col">Slot</th>
+                                <th scope="col">Order Total</th> 
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for order in orders  %}
+                              <tr>
+                                <th scope="row"><a href="{% url 'order_detail' order.order_number %}">{{ order.order_number }}</a></th>
+                                <td>{{ order.full_name }}</td>
+                                <td>{{ order.slot_booking }}</td>
+                                <td>{{ order.payment.amount_paid }}</td>
+                                <td>{{ order.price }}</td>
+                                <td>
+                                  <form method="post" >
+                                      {% csrf_token %}
+                                      {% if order.is_canceled %}
+                                      <a href="" class="btn btn-danger" >Order cancelled</a>
+                                      {% else %}
+                                      <a href="{% url 'order_detail' order.order_number %}"  class="btn btn-success" >View Order</a>
+                                      {% endif %}
+                                  </form>
+                                </td>
+                              </tr>
+                                {% endfor %} 
+                               
+                            </tbody>
+                          </table>
+                          {% else %}
+                            <div class="text-center">
+                              <p style="font-size: 20px; font-weight: bold;">
+                                  <i class="fas fa-shopping-cart"></i> Empty
+                              </p>
+                            </div>
+                          {% endif %}
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            </article>
+        </main>
+    </div>
+    </div>
+
+    </section>
+
+    {% comment %} <script>
+      function confirmCancel(orderId) {
+          if (confirm("Are you sure you want to cancel this order?")) {
+              // Proceed with form submission to cancel the order
+              document.getElementById("cancel-form-" + orderId).submit();
+          }
+      }
+      
+  </script> {% endcomment %}
+
+  
+
+{% endblock %}

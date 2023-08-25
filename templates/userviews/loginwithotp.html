@@ -1,14 +1,29 @@
 {% extends 'base.html' %}
-
-
 {% block content %}
+
+<style>
+
+  .signup {
+    color: black ;
+    text-decoration: none; 
+}
+
+/* Styling for the link on hover */
+.signup:hover {
+    color: grey; 
+    text-decoration: underline; 
+}
+
+</style>
+
 
 
     <!-- ============================ COMPONENT LOGIN   ================================= -->
 
-        <div class="card mx-auto" style="max-width: 380px; margin-top:100px;">
+        <div class="card mx-auto text-center" style="max-width: 380px; margin-top:100px;">
           <div class="card-body">
-          <h4 class="card-title mb-4">Sign in</h4>
+          <h2 class="card-title mb-4">Sign in</h2>
+          {% include 'includes/alerts.html' %}
           <form method="POST" action="{% url 'login_with_otp' %}">
             {% csrf_token %}
               <div class="form-group">
@@ -26,7 +41,7 @@
           </div> <!-- card-body.// -->
         </div> <!-- card .// -->
 
-         <p class="text-center mt-4">Don't have account? <a href="{% url 'register' %}">Sign up</a></p>
+         <p class="text-center mt-4">Don't have account? <a href="{% url 'register' %}" class="signup">Sign up</a></p>
          <br><br>
 
 

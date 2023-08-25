@@ -1,24 +1,85 @@
-{% autoescape off %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Booking Receipt</title>
-</head>
-<body>
-    <h2>Booking Receipt</h2>
-    <p>Hello {{ user.first_name }},</p>
-    <p>Thank you for your booking. Here are the details of your booking:</p>
-    <p>Booking ID: {{ booking.id }}</p>
-    <p>Amount Paid: {{ amount_paid }}</p>
-    <p>Payment Status: {{ razor_pay_status }}</p>
+{% extends 'base.html' %}
+{% load static %}
 
-    <p>If you have any questions or need further assistance, please feel free to contact us.</p>
-    <p>Thank you for choosing us! We look forward to hosting you.</p>
+{% block content %}
 
-    <p>Best regards,</p>
-    <p>Your Booking Team</p>
-</body>
-</html>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    .container {
+        width: 100%;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+    .invoice-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .invoice-details {
+        margin-bottom: 20px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid #000;
+        padding: 8px;
+        text-align: center;
+    }
+    .invoice-footer {
+        text-align: center;
+        margin-top: 20px;
+    }
+</style>
 
+<div class="container">
+    <div class="invoice-header">
+        <h2>Payment Successful</h2>
+    </div>
+    
+    <div class="invoice-details">
+        <p><strong>Order No:</strong> {{ ordered_product }}</p>
+        <p><strong>Transaction ID:</strong> {{ payment_id.razorpay_payment_id }}</p>
+        <p><strong>Order Date:</strong> {{ ordered_product.created_at }}</p>
+        <p><strong>Status:</strong>PAID</p>
+    </div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Package</th>
+                <th>Slot Booking</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <tr>
+                <td>{{ ordered_product.package }}</td>
+                <td>{{ ordered_product.booking.slot_booking }}</td>
+                <td>{{ ordered_product.price }}</td>
+            </tr>
 
-{% endautoescape %}
+        </tbody>
+        <tfoot>
+                                                
+            <tr>
+                <th colspan="2" class="text-right">Tax:</th>
+                <th class="text-center">{{tax}} RUPEE</th>
+            </tr>
+            
+            <tr>
+                <th colspan="2" class="text-right">Grand Total:</th>
+                <th class="text-center">{{ordered_product.price}} RUPEE</th>
+            </tr>
+        </tfoot>
+    </table>
+    
+    <div class="invoice-footer">
+        <p>We look forward to serving you again</p>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,7 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>OTP Verification</title>
+{% extends 'base.html' %}
+
+{% block content %}
+
     <style>
         body {
             display: flex;
@@ -54,17 +54,22 @@
             background-color: #45a049;
         }
     </style>
-</head>
-<body>
-    <div class="container">
-        <h2>OTP Verification</h2>
-        <p>Please enter the OTP code that has been sent to your email.</p>
-        <form method="POST">
-            {% csrf_token %}
-            <input type="text" name="otp" placeholder="Enter OTP">
+
+    
+<div class="container">
+    <h2>Please Enter OTP</h2>
+    {% include 'includes/alerts.html' %}
+    <p>OTP has been sent to your Email Address. OTP Will expire in 5 Minutes</p>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="verification" value="{{ verification }}">
+        <input type="text" name="otp" placeholder="Enter OTP">
             <button type="submit">Verify</button>
         </form>
-        
+        {% comment %} <p class="mt-1"><span id="remaining-time"></span></p>
+        <a href="">Resend OTP</a> {% endcomment %}
     </div>
 </body>
 </html>
+
+{% endblock content %}

@@ -1,0 +1,18 @@
+{% for message in messages %}
+            {% if message.tags == 'success' %}
+              <div class="alert alert-success mt-3 text-success" id="message-alert">{{ message }}</div>
+            {% else %}
+              <div class="alert alert-warning text-warning mt-3" id="message-alert">{{ message }}</div>
+            {% endif %}
+          {% endfor %}
+
+          <script>
+    setTimeout(function() {
+        var messageAlerts = document.querySelectorAll('#message-alert');
+        if (messageAlerts) {
+            messageAlerts.forEach(function(alert) {
+                alert.style.display = 'none';
+            });
+        }
+    }, 5000);
+</script>

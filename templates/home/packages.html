@@ -1,13 +1,16 @@
 {% extends 'base.html' %}
+{% load static %} 
 
-{% block content %}
-{% include 'includes/navbar.html' %}
+{% block content %} 
+
+
+{% include 'includes/navbar.html'%}
 
 <style>
   .package-image {
-    padding-right: 0; 
+    padding-right: 0;
   }
-  
+
   .img {
     max-width: 30%;
     max-height: 30%;
@@ -34,23 +37,23 @@
     font-weight: bold;
   }
   .package-column {
-    flex: 0 0 110%;
+    flex: 0 0 50%;
     padding: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
-  
+
   .package-info {
     display: flex;
     align-items: flex-start;
     margin-left: 10px; /* Adjust the gap between image and text */
   }
-  
+
   /* Add this style to align radio buttons with the package details */
   .package-radio {
     display: flex;
     align-items: center;
   }
-  
+
   .package-radio label {
     margin-right: 10px;
   }
@@ -59,26 +62,49 @@
     justify-content: center; /* Horizontally center the buttons */
     align-items: center; /* Vertically center the buttons */
   }
-  
+
   .button-row button {
     /* Add any additional styles for the buttons if needed */
     margin: 5px;
   }
-
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .card .card-body {
+    flex: 1;
+  }
+  .card .add-to-cart-btn {
+    margin-top: auto;
+    align-self: flex-end;
+    margin-top:170px
+  }
 </style>
 
-<h4>Scheduled Packages</h4>
-
-<form method="POST"  id="packageForm">
+<h1 class="text-center mt-3" style="color:#fff">Scheduled Packages</h1>
+<form method="post" action="">
   {% csrf_token %}
-  <div class="button-row">
-    <div class="button-row">
-      <button name="package" value='reguler' type="submit" class="btn btn-primary vehicle-btn" >Regular Size Car</button>
-      <button name="package" value='medium' type="submit" class="btn btn-warning vehicle-btn">Medium Size Car</button>
-      <button name="package" value='compact' type="submit" class="btn btn-dark vehicle-btn">Compact SUV</button>
-      <button name="package" value='sports' type="submit" class="btn btn-danger vehicle-btn">Sports Car</button>
-    </div>
-  </div>
+<div class="button-row mt-3">
+  <button 
+  type="submit"
+  name="category"
+  value="car"
+  class="btn btn-lg btn-primary"
+  >
+  <i class="fa-solid fa-car-side"></i>
+  CAR
+</button>
+<button
+type="submit"
+name="category"
+value="bike"
+class="btn btn-lg btn-primary"
+>
+<i class="fa-sharp fa-solid fa-motorcycle"></i>
+BIKE
+</button>
+</div>
 </form>
 
 <div class="row mt-4">
@@ -95,80 +121,112 @@
         </thead>
         <tbody>
           {% for package in packages %}
-          <tr>
-            <td>                            
-              <div class="d-flex align-items-start package-info">
-                <img class="img img-sm" src="{{ package.image.url }}" alt="{{ package.name }}">
-                <div class="card-body">
-                  <!-- Package Details -->
-                  <h4 class="">{{ package.name }}</h4>
-                  <div class="package-details">
-                    <div class="package-column">
-                      <ul>
-                        <li>Exterior Wash</li>
-                        <li>Interior Vacuuming</li>
-                        <li>Tire and Wheel Cleaning</li>
-                        <li>Interior Wiping and Dusting</li>
-                      </ul>
+          <form method="GET" action="{% url 'booking' package.id  %}">
+            
+            <tr>
+              <td>
+                <div class="d-flex align-items-start package-info">
+                  <img
+                  class="img img-sm"
+                    src="{% static 'packages/'|add:package.image %}"
+                    alt="{{ package.name }}"
+                  />
+                  <div class="card-body">
+                    <!-- Package Details -->
+                    <h4 class="">{{ package.name }}</h4>
+                    <div class="package-details">
+                      <div class="package-column">
+                        <ul>
+                          <li>Exterior Wash</li>
+                          <li>Interior Vacuuming</li>
+                          <li>Tire and Wheel Cleaning</li>
+                          <li>Interior Wiping and Dusting</li>
+                        </ul>
+                      </div>
+                      <div class="package-column">
+                        <ul>
+                          <li>Glass and Mirror Cleaning</li>
+                          <li>Fragrance</li>
+                          <li>Air Filter Cleaning</li>
+                          <li>Spectrum</li>
+                        </ul>
+                      </div>
                     </div>
-                    <div class="package-column">
-                      <ul>
-                        <li>Glass and Mirror Cleaning</li>
-                        <li>Fragrance</li>
-                        <li>Air Filter Cleaning</li>
-                        <li>Spectrum</li>
-                      </ul>
-                    </div>
+                    <!-- End Package Details -->
                   </div>
-                  <!-- End Package Details -->
                 </div>
-              </div>
-            </td> 
-            
-            <td class="package-radio"> <!-- Use the package-radio class to align the radio buttons -->
-              <div class="form-check form-check-inline">
-                <input class="form-check-input base-price-radio" type="radio" name="vehicle_type_{{ package.id }}" id="sedan_{{ package.id }}" value="Sedan" checked data-price="{{ package.price }}" data-base-price="{{ package.price }}">
-                <label class="form-check-label" for="sedan_{{ package.id }}">Sedan</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="vehicle_type_{{ package.id }}" id="coupe_{{ package.id }}" value="Coupe" data-price="{{ package.price }}">
-                <label class="form-check-label" for="coupe_{{ package.id }}">Coupe</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="vehicle_type_{{ package.id }}" id="suv_{{ package.id }}" value="SUV" data-price="{{ package.price }}">
-                <label class="form-check-label" for="suv_{{ package.id }}">SUV</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="vehicle_type_{{ package.id }}" id="sports_car_{{ package.id }}" value="Sports Car" data-price="{{ package.price }}">
-                <label class="form-check-label" for="sports_car_{{ package.id }}">Sports Car</label>
-              </div>
-            </td>
-            
-            <td class="text-right">
-              <div class="price-wrap">
-                <var class="price">${{ package.price }}</var>
-              </div>
-              <div class="add-to-cart-btn">
-                <a href="{% url 'booking' package.id  %} " class="btn btn-success">Book Now</a>
-              </div>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div> <!-- card.// -->
-  </aside> <!-- col.// -->
-</div> <!-- row.// -->
-  <script>
-    // Wait for the document to be ready
-    document.addEventListener("DOMContentLoaded", function() {
-      // Get the form element
-      const form = document.getElementById("packageForm");
+              </td>
 
-      // Set the default value to 'reguler' (Regular Size Car)
-      form.package.value = 'reguler';
-    });
-  </script>
+              <td class="package-radio">
+                <!-- Use the package-radio class to align the radio buttons -->
+                <div class="row" style="margin: 0">
+                  <!-- Add inline style to remove margin -->
+                  <div class="item-option-select">
+                    <h6>Choose Type</h6>
+                    <option value="" disabled selected>Choose</option>
+                    <select name="vehicle_type" onchange="handleChange(this,'{{ package.id }}')">
+                      {% for i in package.variations_set.all %}
+                      <option value="{{ i.vehicle_type | lower }}" data-id="{{ i.price }}">
+                        {{ i.vehicle_type | capfirst }} 
+                      </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <!-- row.// -->
+              </td>
+              <td class="package-price">
+                <h6>Price: <span class="span-{{package.id}}">0</span></h6>
+              </td>
+              <td class="text-right">
+                <div class="add-to-cart-btn">
+                  <input type="hidden" name="price" class="input-{{package.id}}" value="" >
 
+                  
+                  <button type="submit" class="btn btn-success">Book Now</button>
+                </div>
+              </td>
+            </tr>
+            
+          </form>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <!-- card.// -->
+    </aside>
+    <!-- col.// -->
+  </div>
+  <!-- row.// -->
+
+<script>
+  {% comment %} var initialPrice = document.getElementById("{{ package.id }}").textContent; {% endcomment %}
+  const price = {{price}};
+
+  function handleChange(selectElement, id) {
+    var selectedOption = selectElement.options[selectElement.selectedIndex];
+    var selectedId = selectedOption.getAttribute("data-id");
+
+    var myDiv = document.getElementsByClassName("span-"+id)
+    for (var i = 0; i < myDiv.length; i++) {
+
+      var myDiv = myDiv[i];
+      myDiv.innerHTML = selectedId;
+  }
+
+
+  var myInput = document.querySelector(".input-" +id);
+
+if (myInput) {
+    myInput.value = selectedId;
+}
+
+    price = selectedId;
+  
+
+  }
+  
+ 
+</script>
 
 {% endblock content %}
